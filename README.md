@@ -1,0 +1,58 @@
+# TouchPilot
+
+Android-native AI agent runtime for safe, observable phone control.
+
+TouchPilot is inspired by OpenClaw and PicoClaw, but it is scoped around one
+hard problem first: letting an AI agent operate an Android device through
+explicit, permissioned, inspectable tools.
+
+## Goals
+
+- Run as a native Android app, not only as a desktop companion.
+- Expose Android actions through typed tools with clear risk levels.
+- Use AccessibilityService for semantic UI observation and control.
+- Support OpenAI-compatible model providers first.
+- Add local model inference later through mobile runtimes such as ExecuTorch or
+  llama.cpp.
+- Keep user approval and audit logs central to the runtime.
+
+## Early Scope
+
+The first milestone is a local Android app that can:
+
+- show a chat interface,
+- connect to an OpenAI-compatible model endpoint,
+- observe the current screen through AccessibilityService,
+- tap, type, scroll, open apps, and press back/home through approved tools,
+- record every model decision and tool execution in local logs.
+
+## Reference Projects
+
+- [OpenClaw](https://github.com/openclaw/openclaw) for sessions, skills,
+  channels, and gateway design.
+- [PicoClaw](https://github.com/sipeed/picoclaw) for lightweight runtime
+  discipline and small-device deployment mindset.
+- [MobileClaw](https://github.com/MobileClaw/MobileClaw) for mobile GUI
+  automation and chat-channel agent ideas.
+- [ClawMobile](https://github.com/ClawMobile/ClawMobile) for smartphone-native
+  agent architecture and semantic Android control.
+- [ExecuTorch](https://github.com/pytorch/executorch) for future on-device
+  model inference.
+
+## Repository Layout
+
+```text
+app/              Android app source
+agent/            Agent runtime, provider clients, planner loop
+tools/            Tool specs and tool router
+androidcontrol/   Accessibility and Android action execution
+memory/           Local session, logs, and skill storage
+security/         Approvals, policy, risk levels, secrets handling
+skills/           Markdown skills for task-specific behavior
+docs/             Architecture, security, and tool documentation
+examples/         Provider and MCP integration examples
+```
+
+## Status
+
+Planning and initial scaffold.
