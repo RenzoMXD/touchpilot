@@ -17,6 +17,15 @@ android {
         versionName = "0.1.0"
     }
 
+    buildTypes {
+        release {
+            // Development-only: make release APKs installable on emulators.
+            // Replace this with a real release key before any public release.
+            signingConfig = signingConfigs.getByName("debug")
+            isMinifyEnabled = false
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17

@@ -34,6 +34,16 @@ Build the Android debug APK:
 ./gradlew assembleDebug
 ```
 
+Build an installable development release APK:
+
+```bash
+./gradlew assembleRelease
+```
+
+During early development, the release build is signed with the local Android
+debug key so it can be installed on emulators such as LDPlayer. Replace this
+with a real release signing key before publishing.
+
 If building outside Android Studio, make sure either `ANDROID_HOME` is set or
 `local.properties` contains the local Android SDK path:
 
