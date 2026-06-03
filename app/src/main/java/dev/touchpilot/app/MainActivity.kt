@@ -77,6 +77,20 @@ import dev.touchpilot.app.security.ToolSource
 import dev.touchpilot.app.tools.AndroidToolExecutor
 import dev.touchpilot.app.tools.ToolExecutionLog
 import dev.touchpilot.app.tools.ToolResult
+import dev.touchpilot.app.ui.TouchPilotTheme as Theme
+import dev.touchpilot.app.ui.controlParams
+import dev.touchpilot.app.ui.dp
+import dev.touchpilot.app.ui.editText
+import dev.touchpilot.app.ui.formLabel
+import dev.touchpilot.app.ui.primaryButton
+import dev.touchpilot.app.ui.rounded
+import dev.touchpilot.app.ui.rowButtonParams
+import dev.touchpilot.app.ui.secondaryButton
+import dev.touchpilot.app.ui.sectionTitle
+import dev.touchpilot.app.ui.statusChip
+import dev.touchpilot.app.ui.summaryCard
+import dev.touchpilot.app.ui.timelineCard
+import dev.touchpilot.app.ui.withMargins
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
@@ -2110,114 +2124,6 @@ class MainActivity : Activity() {
         }
     }
 
-    private fun rowButtonParams(): LinearLayout.LayoutParams {
-        return LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f).apply {
-            setMargins(4, 6, 4, 6)
-        }
-    }
-
-    private fun controlParams(): LinearLayout.LayoutParams {
-        return LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        ).apply {
-            setMargins(0, 7, 0, 7)
-        }
-    }
-
-    private fun sectionTitle(text: String): TextView {
-        return TextView(this).apply {
-            setText(text)
-            textSize = 24f
-            typeface = Typeface.DEFAULT_BOLD
-            setTextColor(Color.WHITE)
-            setPadding(0, 2, 0, 10)
-        }
-    }
-
-    private fun formLabel(text: String): TextView {
-        return TextView(this).apply {
-            setText(text)
-            textSize = 12f
-            setTextColor(Theme.MutedText)
-            setPadding(0, 12, 0, 6)
-        }
-    }
-
-    private fun editText(hintText: String): EditText {
-        return EditText(this).apply {
-            hint = hintText
-            contentDescription = hintText
-            setSingleLine(true)
-            textSize = 14f
-            setTextColor(Color.WHITE)
-            setHintTextColor(Theme.MutedText)
-            background = rounded(Theme.SurfaceRaised, 8, Theme.StrokeDark)
-            layoutParams = controlParams()
-            minHeight = 52
-            setPadding(16, 8, 16, 8)
-        }
-    }
-
-    private fun primaryButton(
-        text: String,
-        @DrawableRes iconRes: Int? = null,
-        onClick: () -> Unit
-    ): TextView {
-        return MaterialButton(this).apply {
-            setText(text)
-            gravity = Gravity.CENTER
-            textSize = 14f
-            typeface = Typeface.DEFAULT_BOLD
-            isAllCaps = false
-            setTextColor(Theme.OnAccent)
-            backgroundTintList = ColorStateList.valueOf(Theme.Accent)
-            strokeColor = ColorStateList.valueOf(Theme.Accent)
-            strokeWidth = 1
-            cornerRadius = 10
-            layoutParams = controlParams()
-            minHeight = 50
-            setPadding(16, 12, 16, 12)
-            if (iconRes != null) {
-                icon = ContextCompat.getDrawable(this@MainActivity, iconRes)
-                iconTint = ColorStateList.valueOf(Theme.OnAccent)
-                iconGravity = MaterialButton.ICON_GRAVITY_TEXT_START
-                iconPadding = 8
-                iconSize = 36
-            }
-            setOnClickListener { onClick() }
-        }
-    }
-
-    private fun secondaryButton(
-        text: String,
-        @DrawableRes iconRes: Int? = null,
-        onClick: () -> Unit
-    ): TextView {
-        return MaterialButton(this).apply {
-            setText(text)
-            gravity = Gravity.CENTER
-            textSize = 13f
-            isAllCaps = false
-            setTextColor(Theme.BodyText)
-            backgroundTintList = ColorStateList.valueOf(Theme.SurfaceRaised)
-            strokeColor = ColorStateList.valueOf(Theme.StrokeDark)
-            strokeWidth = 1
-            cornerRadius = 10
-            layoutParams = controlParams()
-            minHeight = 48
-            setPadding(14, 12, 14, 12)
-            if (iconRes != null) {
-                icon = ContextCompat.getDrawable(this@MainActivity, iconRes)
-                iconTint = ColorStateList.valueOf(Theme.BodyText)
-                iconGravity = MaterialButton.ICON_GRAVITY_TEXT_START
-                iconPadding = 8
-                iconSize = 36
-            }
-            setOnClickListener { onClick() }
-        }
-    }
-
     private fun userBubble(text: String): View {
         val column = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -2532,64 +2438,6 @@ class MainActivity : Activity() {
         return container.withMargins(bottom = 12)
     }
 
-    private fun summaryCard(
-        title: String,
-        value: String,
-        chipText: String,
-        chipAccent: Boolean
-    ): View {
-        val card = MaterialCardView(this).apply {
-            setCardBackgroundColor(Theme.Card)
-            strokeColor = if (chipAccent) Theme.Accent else Theme.StrokeDark
-            strokeWidth = if (chipAccent) 2 else 1
-            radius = 8f
-            cardElevation = 0f
-        }
-        val content = LinearLayout(this).apply {
-            orientation = LinearLayout.HORIZONTAL
-            gravity = Gravity.CENTER_VERTICAL
-            setPadding(18, 14, 18, 14)
-        }
-        val textColumn = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-        }
-        textColumn.addView(
-            TextView(this).apply {
-                text = title
-                textSize = 11.5f
-                setTextColor(Theme.MutedText)
-            }
-        )
-        textColumn.addView(
-            TextView(this).apply {
-                text = value
-                textSize = 15f
-                typeface = Typeface.DEFAULT_BOLD
-                setTextColor(Color.WHITE)
-                setPadding(0, 4, 0, 0)
-            }
-        )
-        content.addView(textColumn, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
-        content.addView(statusChip(chipText, chipAccent))
-        card.addView(content)
-        return card.withMargins(top = 4, bottom = 12)
-    }
-
-    private fun statusChip(text: String, accent: Boolean): TextView {
-        val fill = if (accent) Theme.Accent else Theme.SurfaceRaised
-        val textColor = if (accent) Theme.OnAccent else Theme.MutedText
-        val stroke = if (accent) Theme.Accent else Theme.StrokeDark
-        return TextView(this).apply {
-            setText(text)
-            textSize = 10.5f
-            typeface = Typeface.DEFAULT_BOLD
-            setTextColor(textColor)
-            isAllCaps = true
-            background = rounded(fill, 8, stroke)
-            setPadding(12, 5, 12, 5)
-        }
-    }
-
     private fun skillSelectRow(
         title: String,
         subtitle: String,
@@ -2800,86 +2648,6 @@ class MainActivity : Activity() {
             AgentStepStatus.PENDING -> Theme.StrokeDark
             AgentStepStatus.STOPPED -> Theme.MutedText
         }
-    }
-
-    private fun timelineCard(
-        title: String,
-        body: String,
-        actionHint: String? = null,
-        onClick: (() -> Unit)? = null
-    ): View {
-        val card = MaterialCardView(this).apply {
-            setCardBackgroundColor(Theme.Card)
-            strokeColor = if (onClick != null) Theme.Accent else Theme.StrokeDark
-            strokeWidth = if (onClick != null) 2 else 1
-            radius = 8f
-            cardElevation = 0f
-            if (onClick != null) {
-                isClickable = true
-                isFocusable = true
-                setOnClickListener { onClick() }
-            }
-        }
-        val content = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(18, 14, 18, 14)
-        }
-        content.addView(
-            TextView(this).apply {
-                text = title
-                textSize = 13f
-                typeface = Typeface.DEFAULT_BOLD
-                setTextColor(Color.WHITE)
-            }
-        )
-        content.addView(
-            TextView(this).apply {
-                text = body
-                textSize = 12.5f
-                setTextColor(Theme.BodyText)
-                setPadding(0, 8, 0, 0)
-            }
-        )
-        if (actionHint != null) {
-            content.addView(
-                TextView(this).apply {
-                    text = actionHint
-                    textSize = 11.5f
-                    setTextColor(Theme.Accent)
-                    setPadding(0, 8, 0, 0)
-                }
-            )
-        }
-        card.addView(content)
-        return card.withMargins(top = 8, bottom = 8)
-    }
-
-    private fun View.withMargins(
-        left: Int = 0,
-        top: Int = 0,
-        right: Int = 0,
-        bottom: Int = 0
-    ): View {
-        layoutParams = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        ).apply {
-            setMargins(left, top, right, bottom)
-        }
-        return this
-    }
-
-    private fun rounded(fill: Int, radius: Int, stroke: Int): GradientDrawable {
-        return GradientDrawable().apply {
-            shape = GradientDrawable.RECTANGLE
-            setColor(fill)
-            cornerRadius = radius.toFloat()
-            setStroke(1, stroke)
-        }
-    }
-
-    private fun dp(value: Int): Int {
-        return (value * resources.displayMetrics.density).toInt()
     }
 
     private fun selectableItemBackground(): Drawable? {
@@ -3346,17 +3114,4 @@ class MainActivity : Activity() {
         )
     }
 
-    private object Theme {
-        val Background: Int = Color.rgb(8, 13, 16)
-        val SurfaceRaised: Int = Color.rgb(18, 28, 36)
-        val Card: Int = Color.rgb(17, 25, 33)
-        val StrokeDark: Int = Color.rgb(32, 45, 55)
-        val Accent: Int = Color.rgb(47, 220, 105)
-        val Warning: Int = Color.rgb(242, 183, 74)
-        val Danger: Int = Color.rgb(239, 97, 97)
-        val OnAccent: Int = Color.rgb(4, 28, 12)
-        val BodyText: Int = Color.rgb(214, 223, 231)
-        val MutedText: Int = Color.rgb(137, 151, 164)
-        val NavText: Int = Color.rgb(156, 168, 178)
-    }
 }
